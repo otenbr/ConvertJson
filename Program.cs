@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using ConvertJson;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
@@ -28,45 +29,61 @@ internal class Program
 		};
 
 		var obj = JObject.Parse(json);
-		
-		var newObj = new JObject();
+
+		obj.ReplacePath("Dados.Nome", "Junior");
+
+		var newObj = JObject.FromObject(new Valuation());		
 		dict.Keys.ToList().ForEach(key =>
 		{
 			var newKey = dict[key];
-			var value = obj.SelectToken("Dados.Nome");
+			var value = obj.SelectToken(key);
 
-			//newObj.Add(newKey, value);
+			newObj.ReplacePath(newKey, value);
+		});
 
-			//newObj["Identification"] = null;
-			//newObj["Identification"]["Name"] = null;
-			//newObj["Identification"]["Name"] = "Neto";
-			//newObj.TryAdd("Identification", null);
-			//newObj["Identification"]["Age"] = new JObject(37);
+		//var newObj = new JObject();
+		//dict.Keys.ToList().ForEach(key =>
+		//{
+		//	var newKey = dict[key];
+		//	var value = obj.SelectToken(key);
 
-			//JObject newChild = new();
-			//foreach (var kv in newKey.Split('.'))
-			//{
-			//	newChild.TryAdd(kv, null);
-			//	newChild["kv"] = value;
+		//	//newObj.Add(newKey, value);
 
-			//	newObj.Add(newChild);
-			//	newObj.TryAdd(kv, 32);
+		//	//newObj["Identification"] = null;
+		//	//newObj["Identification"]["Name"] = null;
+		//	//newObj["Identification"]["Name"] = "Neto";
+		//	//newObj.TryAdd("Identification", null);
+		//	//newObj["Identification"]["Age"] = new JObject(37);
+
+		//	//JObject newChild = new();
+		//	//foreach (var kv in newKey.Split('.'))
+		//	//{
+		//	//	newChild.TryAdd(kv, null);
+		//	//	newChild["kv"] = value;
+
+		//	//	newObj.Add(newChild);
+		//	//	newObj.TryAdd(kv, 32);
 
 
-			//}
+		//	//}
 
-			//newObj.Add((newChild);
+		//	//newObj.Add((newChild);
 
-			newObj = new JObject();
-
-			newObj["ReportFile"] = new JObject();
-			var jt = newObj["ReportFile"];
-
-			newObj["ReportFile"]["Id"] = value;
-			//newObj["ReportFile"]["Id"] = new JObject(;
-		});		
+		//	//newObj = new JObject();
+		//	var writer = newObj.CreateWriter();
+		//	var paths = newKey.Split('.');
+		//	for (int i = 0; i < paths.Length; i++)
+		//	{
+		//		writer.WritePropertyName(paths[i]);
+		//		if (i < paths.Length - 1)
+		//		{
+		//			writer.WriteStartObject();
+		//		}
+		//	}
+		//	writer.WriteValue(value);
+		//});		
 
 		Console.WriteLine(obj);
 		Console.WriteLine(newObj);
-	}
+	}	
 }
